@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import portfolioRoute from './routes/portfolio'
 import tradesRoute from './routes/trades';
 import authRoutes from './routes/auth';
 import dotenv from 'dotenv';
@@ -12,6 +13,8 @@ const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+
+app.use('/api/portfolio', portfolioRoute);
 
 app.use('/api/auth', authRoutes);
 
