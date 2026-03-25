@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import tradesRoute from './routes/trades';
 import authRoutes from './routes/auth';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -13,6 +14,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
+
+app.use('/api/trades', tradesRoute);
 
 app.get('/health', (req:Request,res:Response) => {
     res.json({status: 'ok'});
