@@ -44,3 +44,37 @@ export const executeBuy = async (req: Request, res: Response) => {
 
 
 }
+
+export const executeSell = async (req: Request, res: Response) => {
+    try{
+        const { ticker, shares } = req.body as { ticker: string, shares: number };
+
+        const price = await getStockPrice(ticker);
+
+        const totalCost = (price * shares);
+
+        const userID = req.user?.id;
+
+        const result = await pool.query('select shares from positions where user_id = $1 and ticker = $2', [userID,ticker]);
+
+        if (result.rows[0].shares < shares) {
+            return res.status(500).json({message: 'Not enough shares to sell'});
+        } else {
+            await pool.query(`update users set cash_balance = cash_balance + $1 where id = $2`
+                , [totalCost, userID]);
+            await pool.query(`update positions set shares = shares - $1 where user_id = $2 and ticker = $3`, [shares,userID,ticker]);
+        }
+
+
+        if (result.rows[0].shares - shares === 0) await pool.query('delete from positions where user_id = $1 and ticker = $2', [userID, ticker]);
+
+        const transactionUpdate = await pool.query('insert into transactions (user_id, ticker, type, shares, price, total) values ($1, $2, $3, $4, $5, $6)'
+            , [userID, ticker, 'sell', shares, price, totalCost]);
+
+        res.status(200).json({message: 'Success'});
+
+    } catch (error){
+        console.error('Error :', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
