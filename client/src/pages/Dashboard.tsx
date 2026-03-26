@@ -1,5 +1,91 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getPortfolio } from "../services/api";
+import { useAuth } from '../context/AuthContext';
+
+interface Position {
+  ticker: string
+  shares: number
+  avgCost: number
+  currentPrice: number
+  currentValue: number
+  gainLoss: number
+  gainLossPercent: number
+}
+
 export const Dashboard = () => {
-    return(
-        <div>Dashboard</div>
+    const [cashBalance, setCashBalance] = useState(0);
+    const [portfolio, setPortfolio] = useState<Position[]>([]);
+    const navigate = useNavigate();
+    const { token } = useAuth();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (!token) return;
+            const result = await getPortfolio(token);
+
+            setPortfolio(result.portfolio);
+            setCashBalance(parseFloat(result.cashBalance));
+        }
+
+        fetchData();
+
+    }, []);
+
+    const loadTradePage = () => {
+        navigate('/trade');
+    }
+
+    return (
+        <div className="page" style={{ padding: '24px 0' }}>
+            <div className="container">
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '28px' }}>
+                    <h1>Portfolio</h1>
+                    <button className="btn btn-primary" onClick={loadTradePage}>
+                        Trade
+                    </button>
+                </div>
+
+                <div className="stat-grid" style={{ marginBottom: '28px' }}>
+                    <div className="stat-card">
+                        <div className="stat-label">Cash Balance</div>
+                        <div className="stat-value">${cashBalance.toFixed(2)}</div>
+                    </div>
+                </div>
+
+                <div className="card">
+                    <div className="card-header">
+                        <span className="card-title">Open Positions</span>
+                    </div>
+
+                    <div className="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Symbol</th>
+                                    <th>Shares</th>
+                                    <th>Price</th>
+                                    <th>Gain / Loss</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {portfolio.map(position => (
+                                    <tr key={position.ticker}>
+                                        <td><span className="ticker-symbol">{position.ticker}</span></td>
+                                        <td className="td-mono">{position.shares}</td>
+                                        <td><span className="ticker-price">${position.currentPrice.toFixed(2)}</span></td>
+                                        <td className={position.gainLoss >= 0 ? 'td-positive' : 'td-negative'}>
+                                            {position.gainLoss >= 0 ? '+' : ''}${position.gainLoss.toFixed(2)}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     );
 }
