@@ -675,6 +675,26 @@ tbody tr:last-child td { border-bottom: none; }
   color: var(--text-primary);
 }
 
+/* ── Recharts ──────────────────────────────────────────────── */
+.recharts-default-tooltip {
+  background: var(--bg-elevated) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+.recharts-tooltip-label {
+  color: var(--text-secondary) !important;
+  font-size: 0.8125rem !important;
+  margin-bottom: 4px !important;
+}
+
+.recharts-tooltip-item {
+  color: var(--accent-light) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.875rem !important;
+}
+
 /* ── Responsive ────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .auth-card { padding: 28px 20px; }

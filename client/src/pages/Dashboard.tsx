@@ -1,20 +1,23 @@
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { useState, useEffect } from "react";
+import { getPerformance } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import { getPortfolio } from "../services/api";
 import { useAuth } from '../context/AuthContext';
 
 interface Position {
-  ticker: string
-  shares: number
-  avgCost: number
-  currentPrice: number
-  currentValue: number
-  gainLoss: number
-  gainLossPercent: number
+    ticker: string
+    shares: number
+    avgCost: number
+    currentPrice: number
+    currentValue: number
+    gainLoss: number
+    gainLossPercent: number
 }
 
 export const Dashboard = () => {
     const [cashBalance, setCashBalance] = useState(0);
+    const [performance, setPerformance] = useState<{ date: string, value: number }[]>([]);
     const [portfolio, setPortfolio] = useState<Position[]>([]);
     const navigate = useNavigate();
     const { token } = useAuth();
@@ -28,7 +31,15 @@ export const Dashboard = () => {
             setCashBalance(parseFloat(result.cashBalance));
         }
 
+        const fetchPerformance = async () => {
+            if (!token) return;
+            const result = await getPerformance(token);
+
+            setPerformance(result);
+        }
+
         fetchData();
+        fetchPerformance();
 
     }, []);
 
@@ -52,6 +63,21 @@ export const Dashboard = () => {
                         <div className="stat-label">Cash Balance</div>
                         <div className="stat-value">${cashBalance.toFixed(2)}</div>
                     </div>
+                </div>
+
+                <div className="card" style={{ marginBottom: '28px' }}>
+                    <div className="card-header">
+                        <span className="card-title">Portfolio Performance</span>
+                    </div>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <LineChart data={performance}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#1e2d45" />
+                            <XAxis dataKey="date" stroke="#4a5a7a" tick={{ fontSize: 12 }} />
+                            <YAxis stroke="#4a5a7a" tick={{ fontSize: 12 }} tickFormatter={(v) => `$${v.toLocaleString()}`} />
+                            <Tooltip formatter={(value: any) => [`$${Number(value).toFixed(2)}`, 'Portfolio Value']} />
+                            <Line type="monotone" dataKey="value" stroke="#6366f1" strokeWidth={2} dot={false} />
+                        </LineChart>
+                    </ResponsiveContainer>
                 </div>
 
                 <div className="card">

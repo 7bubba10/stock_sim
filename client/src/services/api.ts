@@ -40,6 +40,14 @@ export const getTransactions = async (token: string) => {
     return data;
 }
 
+export const getPerformance = async (token: string) => {
+    const response = await axios.get('http://localhost:3001/api/performance', {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    const data = response.data;
+    return data;
+}
+
 export const buy = async (token: string,ticker: string, shares: number) => {
     const response = await axios.post('http://localhost:3001/api/trades/buy',{ticker,shares} , {
         headers: { Authorization: `Bearer ${token}` }
