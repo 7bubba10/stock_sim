@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { Transaction } from './pages/Transactions';
 import { Dashboard } from './pages/Dashboard';
 import { Register } from './pages/Register';
 import { NavBar } from './components/Navbar';
@@ -20,6 +21,7 @@ const AppLayout = () => {
         <Route path='/login' element={<Login />} />
         <Route path='/dashboard' element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path='/trade' element={<ProtectedRoute><Trade /></ProtectedRoute>} />
+        <Route path='/transactions' element={<ProtectedRoute><Transaction /></ProtectedRoute>} />
       </Routes>
     </>
   );

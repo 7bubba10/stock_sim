@@ -25,6 +25,12 @@ export const NavBar = () => {
                 >
                     Trade
                 </NavLink>
+                <NavLink
+                    to="/transactions"
+                    className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+                >
+                    History
+                </NavLink>
             </div>
 
             <div className="navbar-actions">
