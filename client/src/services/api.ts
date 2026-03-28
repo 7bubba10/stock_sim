@@ -1,5 +1,17 @@
 import axios from "axios";
 
+// If idle return to login page
+axios.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+)
+
 export const register = async (email: string, username: string, password: string) => {
     const response = await axios.post('http://localhost:3001/api/auth/register', { email, username, password });
     const data = response.data;
