@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import portfolioRoute from './routes/portfolio'
 import tradesRoute from './routes/trades';
+import marketRoute from './routes/market';
 import authRoutes from './routes/auth';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -19,6 +20,8 @@ app.use('/api/portfolio', portfolioRoute);
 app.use('/api/auth', authRoutes);
 
 app.use('/api/trades', tradesRoute);
+
+app.use('/api/market', marketRoute);
 
 app.get('/health', (req:Request,res:Response) => {
     res.json({status: 'ok'});

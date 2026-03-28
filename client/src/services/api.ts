@@ -36,3 +36,9 @@ export const sell = async (token: string,ticker: string, shares: number) => {
     return data;
 
 }
+
+export const getPrice = async (ticker: string) => {
+    const response = await axios.get(`http://localhost:3001/api/market/price?ticker=${ticker}`);
+    const data = response.data;
+    return data;
+}
