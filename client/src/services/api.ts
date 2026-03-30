@@ -48,21 +48,29 @@ export const getPerformance = async (token: string) => {
     return data;
 }
 
-export const buy = async (token: string,ticker: string, shares: number) => {
-    const response = await axios.post('http://localhost:3001/api/trades/buy',{ticker,shares} , {
+export const buy = async (token: string, ticker: string, shares: number) => {
+    const response = await axios.post('http://localhost:3001/api/trades/buy', { ticker, shares }, {
         headers: { Authorization: `Bearer ${token}` }
     });
     const data = response.data;
     return data;
 }
 
-export const sell = async (token: string,ticker: string, shares: number) => {
-    const response = await axios.post('http://localhost:3001/api/trades/sell',{ticker,shares} , {
+export const sell = async (token: string, ticker: string, shares: number) => {
+    const response = await axios.post('http://localhost:3001/api/trades/sell', { ticker, shares }, {
         headers: { Authorization: `Bearer ${token}` }
     });
     const data = response.data;
     return data;
 
+}
+
+export const runBacktest = async (token: string, ticker: string, startDate: string, endDate:string, shortWindow:number, longWindow:number, startingCash:number) => {
+    const response = await axios.post('http://localhost:3001/api/backtest', { ticker, startDate, endDate, shortWindow, longWindow, startingCash}, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    const data = response.data;
+    return data;
 }
 
 export const getPrice = async (ticker: string) => {

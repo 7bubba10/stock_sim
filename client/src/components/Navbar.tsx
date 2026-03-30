@@ -31,6 +31,12 @@ export const NavBar = () => {
                 >
                     History
                 </NavLink>
+                <NavLink
+                    to="/backtest"
+                    className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+                >
+                    Backtest
+                </NavLink>
             </div>
 
             <div className="navbar-actions">
