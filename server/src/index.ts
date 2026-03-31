@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import transactionsRoute from './routes/transactions';
 import portfolioRoute from './routes/portfolio'
 import performanceRoute from './routes/performance';
+import watchlistRoute from './routes/watchlist';
 import backTestRoute from './routes/backtest';
 import tradesRoute from './routes/trades';
 import marketRoute from './routes/market';
@@ -31,6 +32,8 @@ app.use('/api/transactions', transactionsRoute);
 app.use('/api/performance', performanceRoute);
 
 app.use('/api/backtest', backTestRoute);
+
+app.use('/api/watchlist', watchlistRoute);
 
 app.get('/health', (req:Request,res:Response) => {
     res.json({status: 'ok'});
