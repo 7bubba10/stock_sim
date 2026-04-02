@@ -7,6 +7,7 @@ import { Backtest } from './pages/Backtest';
 import { Dashboard } from './pages/Dashboard';
 import { Register } from './pages/Register';
 import { NavBar } from './components/Navbar';
+import { Alerts } from './pages/Alerts';
 import { Login } from './pages/Login';
 import { Trade } from './pages/Trade';
 import { Home } from './pages/Home';
@@ -26,6 +27,7 @@ const AppLayout = () => {
         <Route path='/transactions' element={<ProtectedRoute><Transaction /></ProtectedRoute>} />
         <Route path='/backtest' element={<ProtectedRoute><Backtest/></ProtectedRoute>} />
         <Route path='/watchlist' element={<ProtectedRoute><Watchlist/></ProtectedRoute>} />
+        <Route path='/alerts' element={<ProtectedRoute><Alerts/></ProtectedRoute>} />
       </Routes>
     </>
   );

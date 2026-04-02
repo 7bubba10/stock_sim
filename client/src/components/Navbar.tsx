@@ -43,6 +43,12 @@ export const NavBar = () => {
                 >
                     Watchlist
                 </NavLink>
+                <NavLink
+                    to="/alerts"
+                    className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+                >
+                    Alerts
+                </NavLink>
             </div>
 
             <div className="navbar-actions">

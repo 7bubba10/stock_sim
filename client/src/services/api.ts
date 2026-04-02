@@ -102,3 +102,27 @@ export const getWatchlist = async (token: string) => {
     const data = response.data;
     return data;
 }
+
+export const getAlerts = async (token: string) => {
+    const response = await axios.get('http://localhost:3001/api/alerts', {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    const data = response.data;
+    return data;
+}
+
+export const createAlert = async (token: string, ticker: string, targetPrice: number, direction: string) => {
+    const response = await axios.post(`http://localhost:3001/api/alerts`, {ticker, targetPrice, direction},{
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    const data = response.data;
+    return data;
+}
+
+export const deleteAlert = async (token: string, id: number) => {
+    const response = await axios.delete(`http://localhost:3001/api/alerts/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    const data = response.data;
+    return data;
+}

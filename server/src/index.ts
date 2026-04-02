@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import { startAlertChecker } from './services/alertChecker';
 import transactionsRoute from './routes/transactions';
 import portfolioRoute from './routes/portfolio'
 import performanceRoute from './routes/performance';
@@ -6,6 +7,7 @@ import watchlistRoute from './routes/watchlist';
 import backTestRoute from './routes/backtest';
 import tradesRoute from './routes/trades';
 import marketRoute from './routes/market';
+import alertRoute from './routes/alerts';
 import authRoutes from './routes/auth';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -35,12 +37,15 @@ app.use('/api/backtest', backTestRoute);
 
 app.use('/api/watchlist', watchlistRoute);
 
+app.use('/api/alerts', alertRoute);
+
 app.get('/health', (req:Request,res:Response) => {
     res.json({status: 'ok'});
 });
 
 app.listen(PORT, () => {
     console.log(`Server running on port http://localhost:${PORT}`);
+    startAlertChecker();
 });
 
 export default app;

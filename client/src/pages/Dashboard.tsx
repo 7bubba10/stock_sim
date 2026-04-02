@@ -65,20 +65,31 @@ export const Dashboard = () => {
                     </div>
                 </div>
 
-                <div className="card" style={{ marginBottom: '28px' }}>
-                    <div className="card-header">
-                        <span className="card-title">Portfolio Performance</span>
+                {performance.length > 1 ? (
+                    <div className="card" style={{ marginBottom: '28px' }}>
+                        <div className="card-header">
+                            <span className="card-title">Portfolio Performance</span>
+                        </div>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <LineChart data={performance}>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#1e2d45" />
+                                <XAxis dataKey="date" stroke="#4a5a7a" tick={{ fontSize: 12 }} />
+                                <YAxis stroke="#4a5a7a" tick={{ fontSize: 12 }} tickFormatter={(v) => `$${v.toLocaleString()}`} />
+                                <Tooltip formatter={(value: any) => [`$${Number(value).toFixed(2)}`, 'Portfolio Value']} />
+                                <Line type="monotone" dataKey="value" stroke="#6366f1" strokeWidth={2} dot={false} />
+                            </LineChart>
+                        </ResponsiveContainer>
                     </div>
-                    <ResponsiveContainer width="100%" height={300}>
-                        <LineChart data={performance}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#1e2d45" />
-                            <XAxis dataKey="date" stroke="#4a5a7a" tick={{ fontSize: 12 }} />
-                            <YAxis stroke="#4a5a7a" tick={{ fontSize: 12 }} tickFormatter={(v) => `$${v.toLocaleString()}`} />
-                            <Tooltip formatter={(value: any) => [`$${Number(value).toFixed(2)}`, 'Portfolio Value']} />
-                            <Line type="monotone" dataKey="value" stroke="#6366f1" strokeWidth={2} dot={false} />
-                        </LineChart>
-                    </ResponsiveContainer>
-                </div>
+                ) : (
+                    <div className="card" style={{ marginBottom: '28px' }}>
+                        <div className="card-header">
+                            <span className="card-title">Portfolio Performance</span>
+                        </div>
+                        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>
+                            Make more trades to see your performance chart.
+                        </div>
+                    </div>
+                )}
 
                 <div className="card">
                     <div className="card-header">
