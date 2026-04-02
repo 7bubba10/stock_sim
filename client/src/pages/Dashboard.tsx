@@ -17,7 +17,7 @@ interface Position {
 
 export const Dashboard = () => {
     const [cashBalance, setCashBalance] = useState(0);
-    const [performance, setPerformance] = useState<{ date: string, value: number }[]>([]);
+    const [performance, setPerformance] = useState<{ date: string, value: number, benchmarkValue: number | null }[]>([]);
     const [portfolio, setPortfolio] = useState<Position[]>([]);
     const navigate = useNavigate();
     const { token } = useAuth();
@@ -75,8 +75,14 @@ export const Dashboard = () => {
                                 <CartesianGrid strokeDasharray="3 3" stroke="#1e2d45" />
                                 <XAxis dataKey="date" stroke="#4a5a7a" tick={{ fontSize: 12 }} />
                                 <YAxis stroke="#4a5a7a" tick={{ fontSize: 12 }} tickFormatter={(v) => `$${v.toLocaleString()}`} />
-                                <Tooltip formatter={(value: any) => [`$${Number(value).toFixed(2)}`, 'Portfolio Value']} />
+                                <Tooltip
+                                    formatter={(value: any, name: any) => [
+                                        `$${Number(value).toFixed(2)}`,
+                                        name === 'value' ? 'Portfolio' : 'SPY Benchmark'
+                                    ]}
+                                />
                                 <Line type="monotone" dataKey="value" stroke="#6366f1" strokeWidth={2} dot={false} />
+                                <Line type="monotone" dataKey="benchmarkValue" stroke="#10b981" strokeWidth={2} dot={false} strokeDasharray="5 5" name="SPY Benchmark" />
                             </LineChart>
                         </ResponsiveContainer>
                     </div>
