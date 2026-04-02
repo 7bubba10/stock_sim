@@ -37,6 +37,12 @@ export const NavBar = () => {
                 >
                     Backtest
                 </NavLink>
+                <NavLink
+                    to="/watchlist"
+                    className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+                >
+                    Watchlist
+                </NavLink>
             </div>
 
             <div className="navbar-actions">

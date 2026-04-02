@@ -65,8 +65,8 @@ export const sell = async (token: string, ticker: string, shares: number) => {
 
 }
 
-export const runBacktest = async (token: string, ticker: string, startDate: string, endDate:string, shortWindow:number, longWindow:number, startingCash:number) => {
-    const response = await axios.post('http://localhost:3001/api/backtest', { ticker, startDate, endDate, shortWindow, longWindow, startingCash}, {
+export const runBacktest = async (token: string, ticker: string, startDate: string, endDate: string, shortWindow: number, longWindow: number, startingCash: number) => {
+    const response = await axios.post('http://localhost:3001/api/backtest', { ticker, startDate, endDate, shortWindow, longWindow, startingCash }, {
         headers: { Authorization: `Bearer ${token}` }
     });
     const data = response.data;
@@ -75,6 +75,30 @@ export const runBacktest = async (token: string, ticker: string, startDate: stri
 
 export const getPrice = async (ticker: string) => {
     const response = await axios.get(`http://localhost:3001/api/market/price?ticker=${ticker}`);
+    const data = response.data;
+    return data;
+}
+
+export const addToWatchlist = async (token: string, ticker: string) => {
+    const response = await axios.post('http://localhost:3001/api/watchlist', { ticker }, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    const data = response.data;
+    return data;
+}
+
+export const removeFromWatchlist = async (token: string, ticker: string) => {
+    const response = await axios.delete(`http://localhost:3001/api/watchlist/${ticker}`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    const data = response.data;
+    return data;
+}
+
+export const getWatchlist = async (token: string) => {
+    const response = await axios.get('http://localhost:3001/api/watchlist', {
+        headers: { Authorization: `Bearer ${token}` }
+    });
     const data = response.data;
     return data;
 }

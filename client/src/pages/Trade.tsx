@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { buy,sell, getPrice } from "../services/api";
 
 
@@ -10,7 +9,7 @@ export const Trade = () => {
     const [shares, setShares] = useState(0)
     const [loading, setLoading] = useState(false);
     const {token} = useAuth();
-    const naviagte = useNavigate();
+    
 
 
     const priceLookup = async () => {
