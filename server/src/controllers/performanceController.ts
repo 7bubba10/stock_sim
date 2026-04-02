@@ -10,7 +10,9 @@ export const getPerformance = async (req: Request, res: Response) => {
 
         const tickers = [...new Set(results.rows.map((t: any) => t.ticker))];
 
-        const fromDate = results.rows[0].created_at.toISOString().split('T')[0];
+        const firstTxDate = new Date(results.rows[0].created_at);
+        firstTxDate.setDate(firstTxDate.getDate() - 7);
+        const fromDate = firstTxDate.toISOString().split('T')[0];
         const toDate = new Date().toISOString().split('T')[0];
 
         const historicalPrices = await Promise.all(
