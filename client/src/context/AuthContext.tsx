@@ -1,5 +1,8 @@
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext, useEffect, useRef, useCallback } from 'react';
 import type { ReactNode } from 'react';
+
+const IDLE_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes of inactivity
+const ACTIVITY_EVENTS = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll'];
 
 interface AuthContextType {
     token: string | null;
@@ -10,22 +13,42 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    // Initialize from localStorage so the user stays logged in across page refreshes
+    // sessionStorage clears automatically when the tab/window is closed
     const [token, setToken] = useState<string | null>(
-        localStorage.getItem('token')
+        sessionStorage.getItem('token')
     );
 
-    const login = (token: string) => {
-        setToken(token);
-        localStorage.setItem('token', token);
-    }
+    const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    const logout = () => {
+    const logout = useCallback(() => {
         setToken(null);
-        localStorage.removeItem('token');
-    }
+        sessionStorage.removeItem('token');
+        if (idleTimer.current) clearTimeout(idleTimer.current);
+    }, []);
 
+    const resetIdleTimer = useCallback(() => {
+        if (idleTimer.current) clearTimeout(idleTimer.current);
+        idleTimer.current = setTimeout(logout, IDLE_TIMEOUT_MS);
+    }, [logout]);
 
+    const login = (newToken: string) => {
+        setToken(newToken);
+        sessionStorage.setItem('token', newToken);
+        resetIdleTimer();
+    };
+
+    // Start/stop idle timer based on whether the user is logged in
+    useEffect(() => {
+        if (!token) return;
+
+        resetIdleTimer();
+        ACTIVITY_EVENTS.forEach(e => window.addEventListener(e, resetIdleTimer, { passive: true }));
+
+        return () => {
+            if (idleTimer.current) clearTimeout(idleTimer.current);
+            ACTIVITY_EVENTS.forEach(e => window.removeEventListener(e, resetIdleTimer));
+        };
+    }, [token, resetIdleTimer]);
 
     return (
         <AuthContext.Provider value={{ token, login, logout }}>

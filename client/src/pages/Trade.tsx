@@ -8,6 +8,7 @@ export const Trade = () => {
     const [price, setPrice] = useState(0);
     const [shares, setShares] = useState(0)
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const {token} = useAuth();
     
 
@@ -19,17 +20,28 @@ export const Trade = () => {
 
     const handleBuy = async () => {
         if (!token) return;
+
+        // Return error if missing fields
+        if (!ticker) return setError('Missing Ticker');
+        if (!shares) return setError('Missing Shares');
+
+        setError('');
         setLoading(true);
         await buy(token!,ticker,shares);
         setLoading(false);
     }
 
     const handleSell = async() => {
-        if (!token) return
+        if (!token) return;
+
+        // Return error if missing fields
+        if (!ticker) return setError('Missing Ticker');
+        if (!shares) return setError('Missing Shares');
+
+        setError('');
         setLoading(true);
         await sell(token!,ticker,shares);
         setLoading(false);
-
     }
 
 
@@ -85,6 +97,20 @@ export const Trade = () => {
                 )}
 
                 <div className="divider" style={{ margin: '20px 0' }} />
+
+                {error && (
+                    <div style={{
+                        marginBottom: 12,
+                        padding: '10px 14px',
+                        background: 'var(--bg-elevated)',
+                        border: '1px solid var(--color-danger)',
+                        borderRadius: 'var(--radius-md)',
+                        color: 'var(--color-danger)',
+                        fontSize: '0.875rem',
+                    }}>
+                        {error}
+                    </div>
+                )}
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                     <button
