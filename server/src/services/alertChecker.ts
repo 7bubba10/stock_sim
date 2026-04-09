@@ -1,6 +1,7 @@
 import pool from '../db'
 import { getStockPrice } from './alpaca'
 
+// Polls all untriggered alerts every 60 seconds and marks them triggered when the condition is met
 export const startAlertChecker = async () => {
     setInterval(async () => {
         try {

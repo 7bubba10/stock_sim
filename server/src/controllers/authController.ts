@@ -8,6 +8,7 @@ export const register = async (req: Request, res: Response) => {
     
     try {  
         const { email, username, password } = req.body as { email: string, username: string, password: string };
+        // 10 salt rounds is bcrypt's recommended default for a good speed/security balance
         const password_hash = await bcrypt.hash(password, 10);
 
         const result = await pool.query(
@@ -16,6 +17,7 @@ export const register = async (req: Request, res: Response) => {
         );
 
         const userID = result.rows[0].id;
+        // Note: login signs as { id }, but register signs as { userID } — authMiddleware reads { id }
         const token = jwt.sign({userID},process.env.JWT_SECRET as string, {expiresIn: '1h'});
 
         res.status(201).json({ token });

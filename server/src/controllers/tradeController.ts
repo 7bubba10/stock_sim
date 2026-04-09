@@ -21,15 +21,15 @@ export const executeBuy = async (req: Request, res: Response) => {
         }
 
         // Update Transaction table with new transaction
-        const transactionUpdate = await pool.query('insert into transactions (user_id, ticker, type, shares, price, total) values ($1, $2, $3, $4, $5, $6)'
+        await pool.query('insert into transactions (user_id, ticker, type, shares, price, total) values ($1, $2, $3, $4, $5, $6)'
             , [userID, ticker, 'buy', shares, price, totalCost]);
 
-        // Update positions table with new position
-        const new_avg_cost = await pool.query(`insert into positions (user_id, ticker, shares, avg_cost) 
-        values ($1,$2,$3,$4) on conflict (user_id, ticker) 
-        do update set 
-        shares = positions.shares + excluded.shares, 
-        avg_cost = 
+        // Upsert the position: create if new, otherwise recalculate weighted average cost
+        await pool.query(`insert into positions (user_id, ticker, shares, avg_cost)
+        values ($1,$2,$3,$4) on conflict (user_id, ticker)
+        do update set
+        shares = positions.shares + excluded.shares,
+        avg_cost =
         (positions.shares * positions.avg_cost + excluded.shares * excluded.avg_cost) / (positions.shares + excluded.shares)`,
             [userID, ticker, shares, price]);
         
@@ -66,9 +66,10 @@ export const executeSell = async (req: Request, res: Response) => {
         }
 
 
+        // Remove the position row entirely when shares hit zero
         if (result.rows[0].shares - shares === 0) await pool.query('delete from positions where user_id = $1 and ticker = $2', [userID, ticker]);
 
-        const transactionUpdate = await pool.query('insert into transactions (user_id, ticker, type, shares, price, total) values ($1, $2, $3, $4, $5, $6)'
+        await pool.query('insert into transactions (user_id, ticker, type, shares, price, total) values ($1, $2, $3, $4, $5, $6)'
             , [userID, ticker, 'sell', shares, price, totalCost]);
 
         res.status(200).json({message: 'Success'});

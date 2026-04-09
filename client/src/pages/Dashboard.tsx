@@ -65,6 +65,7 @@ export const Dashboard = () => {
                     </div>
                 </div>
 
+                {/* Need at least 2 data points to draw a meaningful line chart */}
                 {performance.length > 1 ? (
                     <div className="card" style={{ marginBottom: '28px' }}>
                         <div className="card-header">
@@ -118,6 +119,7 @@ export const Dashboard = () => {
                                         <td><span className="ticker-symbol">{position.ticker}</span></td>
                                         <td className="td-mono">{position.shares}</td>
                                         <td><span className="ticker-price">${position.currentPrice.toFixed(2)}</span></td>
+                                                        {/* Prefix a '+' for gains since toFixed() only adds '-' for losses automatically */}
                                         <td className={position.gainLoss >= 0 ? 'td-positive' : 'td-negative'}>
                                             {position.gainLoss >= 0 ? '+' : ''}${position.gainLoss.toFixed(2)}
                                         </td>

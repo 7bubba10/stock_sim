@@ -11,6 +11,7 @@ export const getStockPrice = async (ticker: string) => {
 
         const data = response.data;
 
+        // `p` is the price field on the latest trade object from Alpaca's market data API
         return data.trade.p;
 
     } catch (error) {

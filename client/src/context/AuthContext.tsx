@@ -10,6 +10,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+    // Initialize from localStorage so the user stays logged in across page refreshes
     const [token, setToken] = useState<string | null>(
         localStorage.getItem('token')
     );

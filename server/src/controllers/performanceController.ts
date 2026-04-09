@@ -10,6 +10,7 @@ export const getPerformance = async (req: Request, res: Response) => {
 
         const tickers = [...new Set(results.rows.map((t: any) => t.ticker))];
 
+        // Pull price history starting 7 days before the first trade for chart context
         const firstTxDate = new Date(results.rows[0].created_at);
         firstTxDate.setDate(firstTxDate.getDate() - 7);
         const fromDate = firstTxDate.toISOString().split('T')[0];
@@ -28,7 +29,7 @@ export const getPerformance = async (req: Request, res: Response) => {
             spyPriceMap[date] = bar.c;
         })
 
-        // Calculate how many SPY shares $100,000 would have bought on day 1
+        // Normalize SPY to the same $100k starting value so it's a fair comparison
         const firstSpyPrice = spyBars[0]?.c || 1;
         const spyShares = 100000 / firstSpyPrice;
 
@@ -43,7 +44,7 @@ export const getPerformance = async (req: Request, res: Response) => {
             });
         });
 
-        // Replay transactions day by day
+        // Replay the user's trade history chronologically to reconstruct portfolio value over time
         let cash = 100000;
         const positions: Record<string, number> = {};
         const performanceData: { date: string, value: number, benchmarkValue: number | null }[] = [];

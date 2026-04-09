@@ -17,6 +17,7 @@ const AppLayout = () => {
 
   return (
     <>
+      {/* Only render the nav when logged in — public pages (home, login, register) have no nav */}
       {token && <NavBar />}
       <Routes>
         <Route path='/' element={<Home />} />

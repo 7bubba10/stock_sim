@@ -45,6 +45,7 @@ app.get('/health', (req:Request,res:Response) => {
 
 app.listen(PORT, () => {
     console.log(`Server running on port http://localhost:${PORT}`);
+    // Start polling for price alerts as soon as the server is ready
     startAlertChecker();
 });
 

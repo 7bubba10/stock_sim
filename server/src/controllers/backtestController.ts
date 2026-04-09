@@ -1,12 +1,10 @@
 import { Request, Response } from "express";
 import { getHistoricalPrices } from "../services/polygon";
 
+// Simple moving average: average of the `window` prices ending at (but not including) `index`
 export const calculateMA = (prices: number[], index: number, window: number) => {
-
     let slicedPirces = prices.slice((index - window), index).reduce((sum, price) => sum + price, 0);
     return slicedPirces / window;
-
-
 }
 
 export const runBackTest = async (req: Request, res: Response) => {
@@ -17,11 +15,12 @@ export const runBackTest = async (req: Request, res: Response) => {
 
         const prices = historicalPrices.results.map((bar: any) => bar.c);
 
-        // Loop and generate buy/sell signals
+        // Moving average crossover strategy: all-in buy on golden cross, all-out sell on death cross
         let cash = startingCash;
         let shares = 0;
         const trades: any[] = [];
 
+        // Start at longWindow so both MAs have enough history to be valid
         for (let i = longWindow; i < prices.length; i++) {
             const shortMA = calculateMA(prices, i, shortWindow);
             const longMA = calculateMA(prices, i, longWindow)
@@ -45,6 +44,7 @@ export const runBackTest = async (req: Request, res: Response) => {
 
         }
 
+        // Mark any open position to market using the last available price
         const finalValue = cash + shares * prices[prices.length - 1]
         res.json({ trades, finalValue, startingCash })
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// If idle return to login page
+// On any 401 response, clear the stored token and force a redirect to login
 axios.interceptors.response.use(
     (response) => response,
     (error) => {

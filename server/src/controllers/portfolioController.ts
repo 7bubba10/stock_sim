@@ -9,6 +9,7 @@ export const getPortfolio = async (req: Request, res: Response) => {
 
         const results = await pool.query(`select * from positions where user_id = $1`, [userID]);
 
+        // Fetch all current prices in parallel to avoid serial network calls
         const positionsWithPrices = await Promise.all(
             results.rows.map(position => getStockPrice(position.ticker))
         );

@@ -11,17 +11,29 @@ export const Backtest = () => {
     const [startingCash, setStartingCash] = useState(0);
     const [results, setResults] = useState<any>(null);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const { token } = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!token) return;
+
+        // Return error if field is missing
+        if (!ticker) return setError('Ticker is required.');
+        if (!startDate) return setError('Start Date is required.');
+        if (!endDate) return setError('End Date is required.');
+        if (!shortWindow) return setError('Short Window is required.');
+        if (!longWindow) return setError('Long Window is required.');
+        if (!startingCash) return setError('Starting Cash is required.');
+
+        setError('');
         setLoading(true);
         const res = await runBacktest(token, ticker, startDate, endDate, shortWindow, longWindow, startingCash);
         setResults(res);
         setLoading(false);
     };
 
+    // Derive summary stats from results — these are display-only, not sent back to the server
     const totalReturn = results
         ? ((results.finalValue - results.startingCash) / results.startingCash) * 100
         : 0;
@@ -70,6 +82,11 @@ export const Backtest = () => {
                                 <input type="number" placeholder="20" value={longWindow || ''} onChange={e => setLongWindow(Number(e.target.value))} />
                             </div>
                         </div>
+                        {error && (
+                            <div style={{ color: 'var(--negative)', fontSize: '0.875rem', marginBottom: '12px' }}>
+                                {error}
+                            </div>
+                        )}
                         <button type="submit" className="btn btn-primary btn-full" disabled={loading}>
                             {loading ? <><span className="spinner" />Running…</> : 'Run Backtest'}
                         </button>
