@@ -72,6 +72,12 @@ export const Dashboard = () => {
                     <div className="card" style={{ marginBottom: '28px' }}>
                         <div className="card-header">
                             <span className="card-title">Portfolio Performance</span>
+                            <span title="The green dashed line shows what your portfolio would be worth if you had 
+                            invested all your starting cash into SPY (S&P 500 ETF) on day one. If your blue line is 
+                            above the green line, you're beating the market."
+                                style={{ cursor: 'help', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+                                ⓘ
+                            </span>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'center', padding: '40px 0' }}>
                             <span className="spinner" style={{ width: 28, height: 28 }} />
@@ -81,6 +87,12 @@ export const Dashboard = () => {
                     <div className="card" style={{ marginBottom: '28px' }}>
                         <div className="card-header">
                             <span className="card-title">Portfolio Performance</span>
+                            <span title="The green dashed line shows what your portfolio would be worth if you had 
+                            invested all your starting cash into SPY (S&P 500 ETF) on day one. If your blue line is 
+                            above the green line, you're beating the market."
+                                style={{ cursor: 'help', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+                                ⓘ
+                            </span>
                         </div>
                         <ResponsiveContainer width="100%" height={300}>
                             <LineChart data={performance}>
