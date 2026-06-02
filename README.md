@@ -1,6 +1,6 @@
 # 📈 StockSim
 
-A full-stack paper trading simulator with real market data, portfolio analytics, and a backtesting engine.
+A Full Stack paper trading simulator with real market data, portfolio analytics, and a backtesting engine.
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
@@ -10,11 +10,11 @@ A full-stack paper trading simulator with real market data, portfolio analytics,
 
 ## Overview
 
-StockSim lets you trade stocks with $100,000 in virtual cash using real-time market prices from Alpaca Markets. Track your portfolio performance against the S&P 500, backtest trading strategies on historical data, set price alerts, and build a watchlist — all without risking real money.
+StockSim lets you trade stocks with $100,000 in virtual cash using real-time market prices from Alpaca Markets. Track your portfolio performance against the S&P 500, backtest trading strategies on historical data, set price alerts, and build a watchlist, all without risking real money.
 
 ## About
 
-I built StockSim as a personal project to sharpen my full-stack development skills while exploring a domain I'm genuinely interested in — finance and algorithmic trading. As a CS student at Marist University, I wanted to go beyond typical apps and build something with real data, real APIs, and interesting engineering problems. This is an ongoing project and I plan to keep expanding it with new features and strategies.
+I built StockSim as a personal project to sharpen my full-stack development skills while exploring a domain I'm genuinely interested in finance and algorithmic trading. As a CS student at Marist University, I wanted to go beyond typical apps and build something with real data, real APIs, and interesting engineering problems. This is an ongoing project and I plan to keep expanding it with new features and strategies.
 
 ## Features
 
