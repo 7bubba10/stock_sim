@@ -12,11 +12,11 @@ export const Home = () => {
             padding: '24px',
             textAlign: 'center'
         }}>
-            <div style={{ marginBottom: '24px' }}>
+            <div className="fade-in" style={{ marginBottom: '24px' }}>
                 <div style={{
                     width: '64px',
                     height: '64px',
-                    background: 'var(--accent)',
+                    background: 'var(--gradient-brand)',
                     borderRadius: '16px',
                     display: 'grid',
                     placeItems: 'center',
@@ -24,7 +24,7 @@ export const Home = () => {
                     margin: '0 auto 20px',
                     boxShadow: 'var(--shadow-accent)'
                 }}>📈</div>
-                <h1 style={{ fontSize: '3rem', marginBottom: '12px', letterSpacing: '-0.04em' }}>StockSim</h1>
+                <h1 className="gradient-text" style={{ fontSize: 'clamp(2.25rem, 1.5rem + 3vw, 3.25rem)', marginBottom: '12px', letterSpacing: '-0.04em' }}>StockSim</h1>
                 <p style={{ fontSize: '1.125rem', color: 'var(--text-secondary)', maxWidth: '480px', margin: '0 auto 40px' }}>
                     Trade stocks with $100,000 in virtual cash. Real market data, zero risk. Track your portfolio, backtest strategies, and see if you can beat the market.
                 </p>
@@ -43,7 +43,7 @@ export const Home = () => {
                 </Link>
             </div>
 
-            <div className="stat-grid" style={{ marginTop: '80px', maxWidth: '800px', width: '100%' }}>
+            <div className="stat-grid stagger" style={{ marginTop: '80px', maxWidth: '800px', width: '100%' }}>
                 <div className="stat-card" style={{ textAlign: 'left' }}>
                     <div style={{ fontSize: '24px', marginBottom: '8px' }}>📊</div>
                     <div className="card-title" style={{ marginBottom: '6px' }}>Live Market Data</div>

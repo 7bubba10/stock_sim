@@ -15,6 +15,10 @@ interface Position {
     gainLossPercent: number
 }
 
+// Format a number as USD with thousands separators, e.g. 100000 -> "100,000.00"
+const money = (value: number) =>
+    value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
 export const Dashboard = () => {
     const [cashBalance, setCashBalance] = useState(0);
     const [performance, setPerformance] = useState<{ date: string, value: number, benchmarkValue: number | null }[]>([]);
@@ -69,7 +73,7 @@ export const Dashboard = () => {
                 <div className="stat-grid" style={{ marginBottom: '28px' }}>
                     <div className="stat-card">
                         <div className="stat-label">Cash Balance</div>
-                        <div className="stat-value">${cashBalance.toFixed(2)}</div>
+                        <div className="stat-value">${money(cashBalance)}</div>
                     </div>
                 </div>
 
@@ -165,10 +169,10 @@ export const Dashboard = () => {
                                     <tr key={position.ticker}>
                                         <td><span className="ticker-symbol">{position.ticker}</span></td>
                                         <td className="td-mono">{position.shares}</td>
-                                        <td><span className="ticker-price">${position.currentPrice.toFixed(2)}</span></td>
-                                        {/* Prefix a '+' for gains since toFixed() only adds '-' for losses automatically */}
+                                        <td><span className="ticker-price">${money(position.currentPrice)}</span></td>
+                                        {/* Prefix a '+' for gains since number formatting only adds '-' for losses automatically */}
                                         <td className={position.gainLoss >= 0 ? 'td-positive' : 'td-negative'}>
-                                            {position.gainLoss >= 0 ? '+' : ''}${position.gainLoss.toFixed(2)}
+                                            {position.gainLoss >= 0 ? '+' : ''}${money(position.gainLoss)}
                                         </td>
                                     </tr>
                                 ))}
