@@ -17,8 +17,9 @@ export const register = async (req: Request, res: Response) => {
         );
 
         const userID = result.rows[0].id;
-        // Note: login signs as { id }, but register signs as { userID } — authMiddleware reads { id }
-        const token = jwt.sign({userID},process.env.JWT_SECRET as string, {expiresIn: '1h'});
+        // Sign with { id } to match authMiddleware and login, so the token issued at
+        // registration is immediately valid for protected routes.
+        const token = jwt.sign({id: userID},process.env.JWT_SECRET as string, {expiresIn: '1h'});
 
         res.status(201).json({ token });
         

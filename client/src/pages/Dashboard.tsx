@@ -35,9 +35,15 @@ export const Dashboard = () => {
         const fetchPerformance = async () => {
             if (!token) return;
             setPerformanceLoading(true);
-            const result = await getPerformance(token);
-            setPerformance(result);
-            setPerformanceLoading(false);
+            try {
+                const result = await getPerformance(token);
+                setPerformance(result);
+            } catch {
+                // Fall back to the empty state rather than spinning forever
+                setPerformance([]);
+            } finally {
+                setPerformanceLoading(false);
+            }
         }
 
         fetchData();

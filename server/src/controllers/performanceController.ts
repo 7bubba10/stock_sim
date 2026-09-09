@@ -8,6 +8,12 @@ export const getPerformance = async (req: Request, res: Response) => {
 
         const results = await pool.query(`select * from transactions where user_id = $1 order by created_at asc`, [userID]);
 
+        // No trades yet: return an empty series so the client can show its
+        // "make more trades" empty state instead of erroring on rows[0].
+        if (results.rows.length === 0) {
+            return res.json([]);
+        }
+
         const tickers = [...new Set(results.rows.map((t: any) => t.ticker))];
 
         // Pull price history starting 7 days before the first trade for chart context
