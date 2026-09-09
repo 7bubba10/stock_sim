@@ -1,0 +1,19 @@
+{
+  "name": "StockSim",
+  "install": "bash .cursor/install.sh",
+  "start": "bash .cursor/start.sh",
+  "terminals": [
+    {
+      "name": "server",
+      "command": "cd server && npm run dev"
+    },
+    {
+      "name": "client",
+      "command": "cd client && npm run dev -- --host"
+    }
+  ],
+  "ports": [
+    { "name": "api", "port": 3001 },
+    { "name": "web", "port": 5173 }
+  ]
+}
