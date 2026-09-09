@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate, Link, NavLink } from "react-router-dom";
+import { useNavigate, useLocation, Link, NavLink } from "react-router-dom";
 
 const NAV_ITEMS = [
     { to: "/dashboard", label: "Dashboard" },
@@ -14,9 +14,16 @@ const NAV_ITEMS = [
 export const NavBar = () => {
     const { logout } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
     const [menuOpen, setMenuOpen] = useState(false);
 
     const closeMenu = () => setMenuOpen(false);
+
+    // Always collapse the mobile menu when the route changes, so selecting a
+    // link never leaves the panel open over the new page.
+    useEffect(() => {
+        setMenuOpen(false);
+    }, [location.pathname]);
 
     return (
         <nav className="navbar">
